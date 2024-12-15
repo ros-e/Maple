@@ -1,14 +1,24 @@
 import discord
 import toml
+import pyfiglet 
+import datetime  
 config = toml.load("config.toml")
 bot_token = config["discord"]["token"]
 bot = discord.Bot()
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} is ready and online!")
+    ascii_art = pyfiglet.figlet_format(bot.user.name)
+    print("=========================================")
+    print(ascii_art.strip()) 
+    print("=========================================")
+    print(f"INFO  Bot started at: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=========================================")
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.listening,
+            name="F*CK SWAG"
+        )
+    )
 
-@bot.slash_command(name="hello", description="Say hello to the bot")
-async def hello(ctx: discord.ApplicationContext):
-    await ctx.respond("Hey!")
 bot.run(bot_token)
